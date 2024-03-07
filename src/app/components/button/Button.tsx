@@ -1,12 +1,19 @@
 type ButtonProps = {
-  content: string;
+  content: string | number;
   isNumber: boolean;
   isEqualSimbol: boolean;
+  onclick?: () => void;
 };
 
-export const Button = ({ content, isNumber, isEqualSimbol }: ButtonProps) => {
+export const Button = ({
+  content,
+  isNumber,
+  isEqualSimbol,
+  onclick,
+}: ButtonProps) => {
   return (
     <button
+      onClick={onclick}
       className={`${isNumber ? "bg-slate-50" : "bg-yellow-600"} ${
         isEqualSimbol && "bg-green-700 text-white"
       } ${
