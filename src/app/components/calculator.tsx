@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Button } from "./button/Button";
 import { Input } from "./input/Input";
 
+import { useCalculator } from "../classes/CalculadoraService";
+
 const rows = {
   firstRow: [7, 8, 9, "/"],
   secondRow: [4, 5, 6, "*"],
@@ -12,11 +14,25 @@ const rows = {
 };
 
 export const Calculator = () => {
-  const [displayNumber, setDisplayNumber] = useState("0");
+  const { numberConcat } = useCalculator();
 
-  function handleInput(clickedButton: string | number) {
-    if (isNaN(+clickedButton) === true) return;
-    setDisplayNumber(displayNumber + clickedButton);
+  const [txtNumbers, setTxtNumbers] = useState("0");
+  const [number1, setNumber1] = useState<string | null>("0");
+  const [number2, setNumber2] = useState<string | null>(null);
+  const [operation, setOperation] = useState(null);
+
+  function handleButton(currBtnValue: string | null) {
+    let result;
+
+    if (operation === null) {
+      result = numberConcat(number1, currBtnValue);
+      setNumber1(result);
+    } else {
+      result = numberConcat(number2, currBtnValue);
+      setNumber2(result);
+    }
+
+    setTxtNumbers(result);
   }
 
   return (
@@ -24,7 +40,7 @@ export const Calculator = () => {
       <div className="flex justify-between gap-2 my-2">
         <Button content="C" isNumber={false} isEqualSimbol={false} />
         <form>
-          <Input type="text" value={displayNumber} />
+          <Input type="text" value={txtNumbers} />
         </form>
       </div>
       {Object.entries(rows).map((row) => {
@@ -35,7 +51,7 @@ export const Calculator = () => {
                 content={item}
                 isNumber={!isNaN(+item)}
                 isEqualSimbol={item == "="}
-                onclick={() => handleInput(item)}
+                onclick={() => handleButton(item)}
               />
             ))}
           </div>

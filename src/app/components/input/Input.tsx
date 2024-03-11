@@ -1,6 +1,6 @@
 type InputProps = {
   type: string;
-  value: string | number;
+  value: string;
 };
 
 export const Input = ({ type, value }: InputProps) => {
