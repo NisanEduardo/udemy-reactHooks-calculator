@@ -1,6 +1,17 @@
 export const useCalculator = () => {
-  const calcular = (num1: number, num2: number, op: string) => {
-    return eval(`${num1}${op}${num2}`);
+  const calcular = (num1: string, num2: string, op: string) => {
+    switch (op) {
+      case "+":
+        return parseFloat(num1) + parseFloat(num2);
+      case "-":
+        return parseFloat(num1) - parseFloat(num2);
+      case "*":
+        return parseFloat(num1) * parseFloat(num2);
+      case "/":
+        return parseFloat(num1) / parseFloat(num2);
+      default:
+        return "0";
+    }
   };
 
   const numberConcat = (

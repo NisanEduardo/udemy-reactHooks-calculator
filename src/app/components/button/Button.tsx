@@ -14,10 +14,16 @@ export const Button = ({
   return (
     <button
       onClick={onclick}
-      className={`${isNumber ? "bg-slate-50" : "bg-yellow-600"} ${
-        isEqualSimbol && "bg-green-700 text-white"
+      className={`${
+        isNumber
+          ? "bg-slate-50"
+          : content === "C"
+          ? "bg-red-600 text-white"
+          : content === "="
+          ? "bg-green-700"
+          : "bg-yellow-600"
       } ${
-        content == "C" && "bg-red-600 text-white"
+        isEqualSimbol && "bg-green-700 text-white"
       } flex flex-col items-center justify-center w-16 h-16 text-black rounded`}
     >
       {content}
