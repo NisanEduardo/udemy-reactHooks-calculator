@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Dispatch, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "./button/Button";
 import { Input } from "./input/Input";
 
@@ -16,16 +16,21 @@ const rows = {
 export const Calculator = () => {
   const { numberConcat, calcular } = useCalculator();
 
-  const [txtNumbers, setTxtNumbers] = useState("0");
+  const [txtNumbers, setTxtNumbers] = useState<string>("0");
   const [number1, setNumber1] = useState<string | null>("0");
   const [number2, setNumber2] = useState<string | null>(null);
   const [operation, setOperation] = useState<string | null>(null);
 
-  const possiblesOperations = ["+", "-", "*", "/"];
+  const possiblesOperations = ["+", "-", "*", "/", "=", "C"];
 
   function handleOperation(op: string) {
     if (operation === null) {
       setOperation(op);
+      return;
+    }
+
+    if (op === "=") {
+      calculateAction();
       return;
     }
 
@@ -36,6 +41,21 @@ export const Calculator = () => {
       setNumber2(null);
       setTxtNumbers(resultado.toString());
     }
+  }
+
+  function calculateAction() {
+    if (number2 === null) return;
+
+    const resultado = calcular(number1 as string, number2, operation as string);
+
+    setTxtNumbers(resultado.toString());
+  }
+
+  function clear() {
+    setTxtNumbers("0");
+    setNumber1("0");
+    setOperation(null);
+    setNumber2(null);
   }
 
   function handleButton(currBtnValue: string) {
@@ -59,7 +79,12 @@ export const Calculator = () => {
   return (
     <div className="container w-[400px] bg-blue-500 p-5 rounded">
       <div className="flex justify-between gap-2 my-2">
-        <Button content="C" isNumber={false} isEqualSimbol={false} />
+        <Button
+          content="C"
+          isNumber={false}
+          isEqualSimbol={false}
+          onclick={clear}
+        />
         <form>
           <Input type="text" value={txtNumbers} />
         </form>
@@ -72,8 +97,10 @@ export const Calculator = () => {
                 key={item}
                 content={item}
                 isNumber={!isNaN(+item)}
-                isEqualSimbol={item == "="}
-                onclick={() => handleButton(item)}
+                isEqualSimbol={item === "="}
+                onclick={() => {
+                  handleButton(item);
+                }}
               />
             ))}
           </div>

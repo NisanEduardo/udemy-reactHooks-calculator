@@ -9,6 +9,7 @@ export const Input = ({ type, value }: InputProps) => {
       type={type}
       value={value}
       className="rounded h-[100%] text-black text-right p-4"
+      data-testId="txtNumeros"
     />
   );
 };
